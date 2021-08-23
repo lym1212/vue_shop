@@ -62,12 +62,13 @@
               size="mini"
               @click="deleteUser(scope.row.id)"
             ></el-button>
-            <!-- 分配权限 -->
-            <el-tooltip content="分配权限" placement="top" :enterable="false">
+            <!-- 分配角色 -->
+            <el-tooltip content="分配角色" placement="top" :enterable="false">
               <el-button
                 type="warning"
                 icon="el-icon-setting"
                 size="mini"
+                @click="showSetRoleDialog(scope.row)"
               ></el-button>
             </el-tooltip>
           </template>
@@ -146,11 +147,35 @@
         <el-button type="primary" @click="editUser">修 改</el-button>
       </span>
     </el-dialog>
+    <!-- 分配角色对话框 -->
+    <el-dialog
+      title="分配角色"
+      width="30%"
+      :visible.sync="setRoleDialogVisible"
+      @close="setRoleDialogClose"
+    >
+      <div>
+        <p>当前用户：{{ currentUser.username }}</p>
+        <p>当前角色：{{ currentUser.role_name }}</p>
+        <el-select v-model="defaultRoleId" placeholder="请选择">
+          <el-option
+            v-for="item in roleList"
+            :key="item.id"
+            :label="item.roleName"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="setRole">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getUserList, stateChange, addUser, searchUserById, editUser, deleteUser } from 'network/home'
+import { getUserList, stateChange, addUser, searchUserById, editUser, deleteUser, getRoleList, setRole } from 'network/home'
 
 export default {
   name: 'Users',
@@ -184,6 +209,7 @@ export default {
       // 控制对话框的显示和隐藏
       addDialogVisible: false,
       editDialogVisible: false,
+      setRoleDialogVisible: false,
       newUser: {
         username: '',
         password: '',
@@ -191,6 +217,9 @@ export default {
         mobile: ''
       },
       editUserData: {},
+      defaultRoleId: '',
+      roleList: [],
+      currentUser: {},
       // 添加新用户的验证规则
       addFormRules: {
         username: [
@@ -224,6 +253,7 @@ export default {
   },
   created() {
     this.getUserList()
+    this.getRoleList()
   },
   methods: {
     // 获取用户列表
@@ -234,6 +264,14 @@ export default {
       } else {
         this.userList = res.data.users
         this.totalUser = res.data.total
+      }
+    },
+    async getRoleList() {
+      const { data: res } = await getRoleList()
+      if (res.meta.status !== 200) {
+        this.$msg.error(res.meta.msg)
+      } else {
+        this.roleList = res.data
       }
     },
     // 一页显示多少条数据
@@ -266,6 +304,10 @@ export default {
     },
     editDialogClose() {
       this.$refs.editFormRef.resetFields()
+    },
+    setRoleDialogClose() {
+      this.currentUser = {}
+      this.defaultRoleId = ''
     },
     // 添加用户
     addUser() {
@@ -323,6 +365,21 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    showSetRoleDialog(user) {
+      this.currentUser = user
+      this.setRoleDialogVisible = true
+    },
+    async setRole() {
+      const { data: res } = await setRole(this.currentUser.id, this.defaultRoleId)
+      console.log(res)
+      if (res.meta.status !== 200) {
+        this.$msg.error('设置失败！')
+      } else {
+        this.$msg.success(res.meta.msg)
+        this.getUserList()
+        this.setRoleDialogVisible = false
+      }
     }
   }
 }

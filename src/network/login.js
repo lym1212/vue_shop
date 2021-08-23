@@ -1,7 +1,7 @@
 import { request } from './request'
 
 export function loginRequest({ username, password }) {
-  return request().post('/login', {
+  return request().post('login', {
     username,
     password
   })

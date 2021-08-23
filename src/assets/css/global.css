@@ -2,6 +2,7 @@ html, body, #app {
   margin: 0;
   padding: 0;
   height: 100%;
+  cursor: url('~assets/cursor-default.9c62a210.svg'), default;
 }
 .el-breadcrumb {
   margin-bottom: 15px;

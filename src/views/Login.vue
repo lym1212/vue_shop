@@ -69,6 +69,7 @@ export default {
       this.$refs.loginRef.validate(async valid => {
         if (!valid) return
         const { data: res } = await loginRequest(this.loginInfo)
+        // console.log(res)
         if (res.meta.status !== 200) {
           this.$msg.error(res.meta.msg)
         } else {
