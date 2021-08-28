@@ -1,3 +1,14 @@
+# 一些问题
+
+```
+keyup 和 blur 绑定同一个事件重复触发
+解决：
+@keyup.enter.native = "$event.target.blur()"
+@blur = "func"
+```
+
+
+
 
 
 # 路由规则

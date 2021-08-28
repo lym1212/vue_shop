@@ -341,9 +341,9 @@ export default {
       if (res.meta.status !== 200) {
         this.$msg.error('修改用户信息失败')
       } else {
-        this.editDialogVisible = false
         this.getUserList()
         this.$msg.success('修改成功')
+        this.editDialogVisible = false
       }
     },
     deleteUser(id) {

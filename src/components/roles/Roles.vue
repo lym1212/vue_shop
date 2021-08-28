@@ -271,16 +271,10 @@ export default {
       this.getRightList()
       this.setRole = role.id
       this.getCheckedKeys(role, this.checkedKeys)
-      // role.forEach(item => {
-      //   item.children.forEach(item => {
-      //     item.children.forEach(item => {
-      //       this.checkedKeys.push(item.id)
-      //     })
-      //   })
-      // })
       console.log(this.checkedKeys)
       this.rightDialogVisible = true
     },
+    // 递归获取 id
     getCheckedKeys(node, arr) {
       if (!node.children) {
         return arr.push(node.id)
