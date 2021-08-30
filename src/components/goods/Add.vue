@@ -219,9 +219,9 @@ export default {
         this.newGoodData.attrs.push(info)
       })
       newData.attrs = this.newGoodData.attrs
-      console.log(newData)
+      // console.log(newData)
       const { data: res } = await addGoods(newData)
-      console.log(res)
+      // console.log(res)
       if (res.meta.status !== 201) return this.$msg.error(res.meta.msg)
       this.$router.push('/goods')
     }

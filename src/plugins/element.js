@@ -6,7 +6,7 @@ import {
   Table, TableColumn, Switch, Tooltip, Pagination, Dialog,
   MessageBox, Tag, Tree, Select, Option, Cascader, Alert,
   Tabs, TabPane, Steps, Step, Checkbox, CheckboxGroup,
-  Upload
+  Upload, Timeline, TimelineItem
 } from 'element-ui'
 
 Vue.use(Button)
@@ -45,6 +45,9 @@ Vue.use(Step)
 Vue.use(Checkbox)
 Vue.use(CheckboxGroup)
 Vue.use(Upload)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
+
 
 // 弹窗
 Vue.prototype.$msg = Message
